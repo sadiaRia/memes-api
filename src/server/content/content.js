@@ -13,12 +13,13 @@ let ContentSchema = new Schema({
   blockReqBy: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   isSiteWhiteListed: { type: Boolean, default: false },
   whiteListedSite: [{ type: String, enum: ['facebook', 'instagram', 'wahtsapp'] }],
+  user: { type: Schema.Types.ObjectId, ref: 'User' },
   createdAt: { type: Date, default: Date.now() },
   lastUpdatedAt: { type: Date },
   deleted: { type: Boolean, default: false },
 });
 
-UserSchema.plugin(Plugins.documentDeleted);
+ContentSchema.plugin(Plugins.documentDeleted);
 
 // Export the model
 const Content = mongoose.model('Content', ContentSchema);
