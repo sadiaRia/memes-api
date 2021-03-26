@@ -139,7 +139,27 @@ const isContentShareable = async (req, res) => {
   return res.status(200).send(false);
 }
 
+// - image can be editable & deletable.
+const update = (req, res) => {
+  Content.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, (err, updatedContent) => {
+    if (err) { return res.status(400).send('Failed to update content.'); }
+    res.status(200).send(updatedContent);
+  });
 
+}
+
+const remove = (req, res) => {
+  Content.findById(req.params.id, (err, content) => {
+    if (err) { return res.status(400).send('Failed to find content.') }
+    content.lastUpdatedAt = Date.now();
+    content.deleted = true;
+    content.save((err) => {
+      if (err) { return res.status(400).send('Failed to delete content.'); }
+      res.status(200).send('Content deleted.');
+    });
+  });
+
+}
 
 module.exports = {
   uploadImage,
@@ -149,5 +169,7 @@ module.exports = {
   showUserStatistics,
   list,
   get,
-  isContentShareable
+  isContentShareable,
+  update,
+  remove
 }
