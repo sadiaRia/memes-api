@@ -6,6 +6,7 @@ module.exports = app => {
   app.get('/content-link', ContentController.getImageByLink);  // after uploading the image user have to save it 
   app.put('/content/add-like/:id', ContentController.addLike);  // after uploading the image user have to save it 
 
+  app.get('/content/show-statistics/:userId', ContentController.showUserStatistics);  // after uploading the image user have to save it 
 
 
 

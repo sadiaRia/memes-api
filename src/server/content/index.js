@@ -1,7 +1,9 @@
 const _ = require('lodash'),
   Content = require('./content'),
+  mongoose = require('mongoose'),
   config = require('../config/constants/aws'),
   uploader = require('../utils/uploader');
+const ObjectId = mongoose.Types.ObjectId;
 
 const uploadImage = (req, res) => {
   if (!config.s3ImageConfiguration.secretAccessKey) {
@@ -61,10 +63,35 @@ const addLike = (req, res) => {
     });
 }
 
+// - Registered users can view the statistics of uploaded memes. Statistics about the total viewed, liked 
+// and blocked request.
+const showUserStatistics = (req, res) => {
+  let user = req.params.userId;
+  let query = {
+    user: ObjectId(`${user}`)
+  };
+  Content.aggregate([
+    { $match: query },
+    {
+      $group:
+      {
+        _id: '$user',
+        totalViewCount: { $sum: '$viewCount' },
+        totalLikesCount: { $sum: '$likesCount' },
+        totalDislikesCount: { $sum: '$dislikesCount' },
+        totalBlockReqCount: { $sum: '$blockReqCount' },
+      }
+    }
+  ], (err, result) => {
+    if (err) { return res.status(400).send(err); }
+    return res.status(200).send(result)
+  });
+}
 
 module.exports = {
   uploadImage,
   create,
   getImageByLink,
-  addLike
+  addLike,
+  showUserStatistics
 }
