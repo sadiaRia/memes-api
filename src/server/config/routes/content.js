@@ -8,8 +8,7 @@ module.exports = app => {
   app.get('/content/show-statistics/:userId', ContentController.showUserStatistics); 
   app.get('/contents', ContentController.list);  
   app.get('/contents/:id', ContentController.get);  
-
-
+  app.get('/contents/isContentShareable/:id', ContentController.isContentShareable);  
 
 };
 

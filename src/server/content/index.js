@@ -118,11 +118,25 @@ const list = async (req, res) => {
 
 }
 
-const get = (req, res) => {
+const get = async (req, res) => {
   const content = await Content.findOneAndUpdate({ _id: req.params.id }, { $inc: { viewCount: 1 } }, { new: true }).catch((err) => {
     return res.status(400).send('Failed to fetch content!');
   })
   return res.status(200).send(content);
+}
+// - When the user will upload an image, he can define from which site this image can be viewed. 
+const isContentShareable = async (req, res) => {
+  let site = req.query.site;
+  const content = await Content.findById(req.params.id).catch((err) => {
+    return res.status(400).send('Failed to fetch content!');
+  })
+  if (!content.isSiteWhiteListed) {
+    return res.status(200).send(true);
+  }
+  if (content.whiteListedSite.includes(site)) {
+    return res.status(200).send(true)
+  }
+  return res.status(200).send(false);
 }
 
 
@@ -134,5 +148,6 @@ module.exports = {
   addLike,
   showUserStatistics,
   list,
-  get
+  get,
+  isContentShareable
 }
