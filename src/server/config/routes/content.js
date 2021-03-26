@@ -7,6 +7,7 @@ module.exports = app => {
   app.put('/content/add-like/:id', ContentController.addLike);
   app.get('/content/show-statistics/:userId', ContentController.showUserStatistics); 
   app.get('/contents', ContentController.list);  
+  app.get('/contents/:id', ContentController.get);  
 
 
 

@@ -118,6 +118,13 @@ const list = async (req, res) => {
 
 }
 
+const get = (req, res) => {
+  const content = await Content.findOneAndUpdate({ _id: req.params.id }, { $inc: { viewCount: 1 } }, { new: true }).catch((err) => {
+    return res.status(400).send('Failed to fetch content!');
+  })
+  return res.status(200).send(content);
+}
+
 
 
 module.exports = {
@@ -126,5 +133,6 @@ module.exports = {
   getImageByLink,
   addLike,
   showUserStatistics,
-  list
+  list,
+  get
 }
