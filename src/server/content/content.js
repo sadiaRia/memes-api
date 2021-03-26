@@ -2,7 +2,7 @@ const mongoose = require('mongoose'),
   Plugins = require('../utils/plugins').Plugins,
   Schema = mongoose.Schema;
 
-let ImageSchema = new Schema({
+let ContentSchema = new Schema({
   url: { type: String },
   likesCount: { type: Number },
   viewCount: { type: Number },
@@ -21,5 +21,5 @@ let ImageSchema = new Schema({
 UserSchema.plugin(Plugins.documentDeleted);
 
 // Export the model
-const Image = mongoose.model('Image', ImageSchema);
-module.exports = Image;
+const Content = mongoose.model('Content', ContentSchema);
+module.exports = Content;
