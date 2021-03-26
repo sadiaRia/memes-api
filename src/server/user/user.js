@@ -8,6 +8,7 @@ let UserSchema = new Schema({
   gender: { type: String },
   password: { type: String },
   profilePicture: { type: String },
+  verificationToken: { type: String },
   isVerified: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now() },
   lastUpdatedAt: { type: Date, default: Date.now },
