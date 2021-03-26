@@ -88,10 +88,43 @@ const showUserStatistics = (req, res) => {
   });
 }
 
+// -normal list & also  Sort top images by top viewed & top liked count.
+
+const list = async (req, res) => {
+  let query = req.query;
+  let sortCriteria = {};
+  let limit = req.query.limit;
+  if (req.query.limit) {
+    limit = parseInt(req.query.limit);
+    delete query.limit;
+  }
+
+  if (query.viewCount) {
+    sortCriteria.viewCount = -1;
+    delete query.viewCount;
+  } else if (query.likesCount) {
+    sortCriteria.likesCount = -1;
+    delete query.likesCount;
+  }
+
+  let contentList = await Content.find(query)
+    .sort(sortCriteria)
+    .limit(limit)
+    .catch((err) => {
+      return res.status(400).send('failed to get contents');
+    });
+
+  return res.status(200).send(contentList);
+
+}
+
+
+
 module.exports = {
   uploadImage,
   create,
   getImageByLink,
   addLike,
-  showUserStatistics
+  showUserStatistics,
+  list
 }
