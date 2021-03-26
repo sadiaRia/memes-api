@@ -34,6 +34,7 @@ app.get('/', (req, res) => {
 });
 
 app.use(express.static(publicPath));
+require('./tasks').startTasks();
 
 const server = app.listen(4200, () => {
   console.log("Boilerplate listening on port 4200!");

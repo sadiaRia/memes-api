@@ -158,9 +158,10 @@ const remove = (req, res) => {
       res.status(200).send('Content deleted.');
     });
   });
-
 }
 
+// - image can be uploaded for certain period of time. After that image will be automatically automatically
+//for that now I am going to use node scheduler
 module.exports = {
   uploadImage,
   create,
