@@ -32,7 +32,6 @@ connection.once('open', function () {
 });
 
 
-
 const publicPath = path.resolve(__dirname, '..', '..', 'public');
 app.get('/', (req, res) => {
 	res.sendFile(`${publicPath}/index.html`);
