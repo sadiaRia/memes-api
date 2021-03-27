@@ -18,12 +18,10 @@ expressSession = require('express-session'),
 
 mongoose.connect(dbConfig.db, { useNewUrlParser: true, useUnifiedTopology: true });
 app.use(bodyParser.json());
-app.use(cors());
-app.use(router);
+app.use(bodyParser.urlencoded({ extended: true }));
 
-fs.readdirSync(path.join(__dirname, '/config/routes')).map((file) => {
-	require('./config/routes/' + file)(app);
-});
+app.use(cors());
+
 
 mongoose.Promise = global.Promise;
 mongoose.connect(dbConfig.db, { useNewUrlParser: true });
@@ -39,6 +37,7 @@ const publicPath = path.resolve(__dirname, '..', '..', 'public');
 app.get('/', (req, res) => {
 	res.sendFile(`${publicPath}/index.html`);
 });
+app.use(router);
 
 app.use(cookieParser());
 app.use(cors({
@@ -72,6 +71,9 @@ app.use((req, res, next) => {
 		res.clearCookie('node_test');
 	}
 	next();
+});
+fs.readdirSync(path.join(__dirname, '/config/routes')).map((file) => {
+	require('./config/routes/' + file)(app);
 });
 
 
