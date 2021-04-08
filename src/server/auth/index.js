@@ -46,7 +46,7 @@ const login = async (req, res) => {
   if (!result) {
     return res.status(202).send('Invalid Login Credentials');
   }
-  req.session = user; //wanted to store it on redis but for now just keet it as it is
+  req.session.user = user; //wanted to store it on redis but for now just keet it as it is
   return res.status(200).send(user);
 };
 
